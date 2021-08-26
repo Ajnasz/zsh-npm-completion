@@ -1,0 +1,149 @@
+#compdef npm
+#autoload
+
+local -a _1st_arguments
+_1st_arguments=(
+	'run'
+	'access'
+	'adduser'
+	'audit'
+	'bin'
+	'bugs'
+	'cache'
+	'ci'
+	'completion'
+	'config'
+	'dedupe'
+	'deprecate'
+	'diff'
+	'dist-tag'
+	'docs'
+	'doctor'
+	'edit'
+	'exec'
+	'explain'
+	'explore'
+	'find-dupes'
+	'fund'
+	'help'
+	'help-search'
+	'hook'
+	'init'
+	'install'
+	'install-ci-test'
+	'install-test'
+	'link'
+	'logout'
+	'ls'
+	'org'
+	'outdated'
+	'owner'
+	'pack'
+	'ping'
+	'pkg'
+	'prefix'
+	'profile'
+	'prune'
+	'publish'
+	'rebuild'
+	'repo'
+	'restart'
+	'root'
+	'run-script'
+	'search'
+	'set-script'
+	'shrinkwrap'
+	'star'
+	'stars'
+	'start'
+	'stop'
+	'team'
+	'test'
+	'token'
+	'uninstall'
+	'unpublish'
+	'unstar'
+	'update'
+	'version'
+	'view'
+	'whoami'
+)
+
+_npm_get_package_json_path() {
+	local package_json_path
+	package_json_path="$PWD"
+	while [ ! -f "$package_json_path/package.json" ]
+	do
+		if [ "$package_json_path" = "/" ]
+		then
+			return
+		fi
+
+		package_json_path="$(dirname "$package_json_path")"
+	done
+
+	echo "$package_json_path/package.json"
+}
+
+_npm_get_scripts() {
+	local package_json_path
+	package_json_path=$(_npm_get_package_json_path)
+	if [ -z "$package_json_path" ]
+	then
+		return 1
+	fi
+	compadd $(jq -r '.scripts | keys[]' < "$package_json_path")
+}
+
+_npm_subcommand() {
+	case "$words[1]" in
+		'run'|'run-script')
+			_alternative "runscripts:npm runscripts:_npm_get_scripts"
+			return
+			;;
+		'publish')
+			_arguments \
+			'(--tag)--tag[Registers the published package with the given tag]:npmtag:' \
+			'(--access)--access[Tells the registry whether this package should be published as public or restricted]:npm access:(public restricted)' \
+			'(--otp)--otp:one time password:' \
+			'(--dry-run)--dry-run[Does everything publish would do except actually publishing to the registry]' \
+			'(--workspaces)--workspaces[Enables workspace context while publishing.]:workspaces:' \
+			'(--workspace)--workspace[Enables workspaces context and limits results to only those specified by this config item]:workspace:' \
+			&& return 0
+			;;
+		'install'|'i'|'add')
+			_arguments \
+			'(-P --save-prod)'{-P,--save-prod}'[Package will appear in your dependencies]' \
+			'(-D --save-dev)'{-D,--save-dev}'[Package will appear in your devDependencies]' \
+			'(-O --save-optional)'{-O,--save-optional}'[Package will appear in your optionalDependencies]' \
+			'(--no-save)--no-save[Prevents saving to dependencies]' \
+			'(-E --save-exact)'{-E,--save-exact}'[Saved dependencies will be configured with an exact version]' \
+			'(-B --save-bundle)'{-B,--save-bundle}'[Saved dependencies will also be added to your bundleDependencies list]' \
+			'(--save-peer)--save-peer' \
+			'(--force -f)'{--force,-f}'[force npm to fetch remote resources even if a local copy exists on disk.]' \
+			'(--package-lock-only)--package-lock-only[only update the package-lock.json]' \
+			'(--dry-run)--dry-run' \
+			'(--no-save)--no-save' \
+			'(--tag)--tag' \
+			'(--no-audit)--no-audit' \
+			'(--no-fund)--no-fund' \
+			&& return 0
+			;;
+	'ci')
+		_arguments \
+			'(--no-audit)--no-audit' \
+			'(--no-fund)--no-fund' \
+			&& return 0
+			;;
+	esac
+
+	return 1
+}
+
+_arguments -C '*:: :->subcmds'
+if (( CURRENT == 1 ));then
+	_describe -t commands "npm command" _1st_arguments
+	return
+fi
+
+_npm_subcommand
