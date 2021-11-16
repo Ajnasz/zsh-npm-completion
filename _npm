@@ -76,13 +76,14 @@ _npm_get_package_json_path() {
 	do
 		if [ "$package_json_path" = "/" ]
 		then
-			return
+			return 1
 		fi
 
 		package_json_path="$(dirname "$package_json_path")"
 	done
 
 	echo "$package_json_path/package.json"
+	return 0
 }
 
 _npm_get_scripts() {
@@ -141,7 +142,8 @@ _npm_subcommand() {
 }
 
 _arguments -C '*:: :->subcmds'
-if (( CURRENT == 1 ));then
+if (( CURRENT == 1 ))
+then
 	_describe -t commands "npm command" _1st_arguments
 	return
 fi
