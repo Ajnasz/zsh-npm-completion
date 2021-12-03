@@ -130,8 +130,11 @@ _npm_subcommand() {
 			'(--no-fund)--no-fund' \
 			&& return 0
 			;;
-	'ci')
-		_arguments \
+		'link')
+			_files
+			;;
+		'ci')
+			_arguments \
 			'(--no-audit)--no-audit' \
 			'(--no-fund)--no-fund' \
 			&& return 0
