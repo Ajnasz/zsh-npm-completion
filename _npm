@@ -69,6 +69,15 @@ _1st_arguments=(
 	'whoami'
 )
 
+local -a _cache_arguments
+
+_cache_arguments=(
+	'clean'
+	'add'
+	'ls'
+	'verify'
+)
+
 _npm_get_package_json_path() {
 	local package_json_path
 	package_json_path="$PWD"
@@ -139,6 +148,8 @@ _npm_subcommand() {
 			'(--no-fund)--no-fund' \
 			&& return 0
 			;;
+		'cache')
+			_describe -t commands "npm clean commands" _cache_arguments
 	esac
 
 	return 1
