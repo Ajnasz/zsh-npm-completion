@@ -137,6 +137,7 @@ _npm_subcommand() {
 			'(--tag)--tag' \
 			'(--no-audit)--no-audit' \
 			'(--no-fund)--no-fund' \
+			'(--legacy-peer-deps)--legacy-peer-deps' \
 			&& return 0
 			;;
 		'link')
