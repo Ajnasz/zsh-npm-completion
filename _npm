@@ -69,13 +69,24 @@ _1st_arguments=(
 	'whoami'
 )
 
-local -a _cache_arguments
+local -a _npm_cache_arguments
 
-_cache_arguments=(
+_npm_cache_arguments=(
 	'clean'
 	'add'
 	'ls'
 	'verify'
+)
+
+_npm_version_arguments=(
+	'major'
+	'minor'
+	'patch'
+	'premajor'
+	'preminor'
+	'prepatch'
+	'prerelease'
+	'from-git'
 )
 
 _npm_get_package_json_path() {
@@ -150,7 +161,10 @@ _npm_subcommand() {
 			&& return 0
 			;;
 		'cache')
-			_describe -t commands "npm clean commands" _cache_arguments
+			_describe -t commands "npm clean commands" _npm_cache_arguments
+			;;
+		'version')
+			_describe -t commands "npm version commands" _npm_version_arguments
 	esac
 
 	return 1
