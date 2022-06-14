@@ -116,6 +116,17 @@ _npm_get_scripts() {
 	compadd $(jq -r '.scripts | keys[]' < "$package_json_path")
 }
 
+_npm_get_packages() {
+	local package_json_path
+	package_json_path=$(_npm_get_package_json_path)
+	if [ -z "$package_json_path" ]
+	then
+		return 1
+	fi
+
+	compadd $(jq -r '.dependencies * .devDependencies | keys | .[]' < "$package_json_path")
+}
+
 _npm_subcommand() {
 	case "$words[1]" in
 		'run'|'run-script')
@@ -151,8 +162,13 @@ _npm_subcommand() {
 			'(--legacy-peer-deps)--legacy-peer-deps' \
 			&& return 0
 			;;
+		'uninstallun'|'un')
+			_alternative "packages:npm packages:_npm_get_packages"
+			return
+			;;
 		'link')
 			_files
+			return
 			;;
 		'ci')
 			_arguments \
@@ -162,9 +178,12 @@ _npm_subcommand() {
 			;;
 		'cache')
 			_describe -t commands "npm clean commands" _npm_cache_arguments
+			return
 			;;
 		'version')
 			_describe -t commands "npm version commands" _npm_version_arguments
+			return
+			;;
 	esac
 
 	return 1
