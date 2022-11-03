@@ -1,6 +1,8 @@
 #compdef npm
 #autoload
 
+JQ=$(command -v gojq || command -v jq)
+
 local -a _1st_arguments
 _1st_arguments=(
 	'run'
@@ -113,7 +115,7 @@ _npm_get_scripts() {
 	then
 		return 1
 	fi
-	compadd $(jq -r '.scripts | keys[]' < "$package_json_path")
+	compadd $($JQ -r '.scripts | keys[]' < "$package_json_path")
 }
 
 _npm_get_packages() {
@@ -124,7 +126,7 @@ _npm_get_packages() {
 		return 1
 	fi
 
-	compadd $(jq -r '.dependencies * .devDependencies | keys | .[]' < "$package_json_path")
+	compadd $($JQ -r '.dependencies * .devDependencies | keys | .[]' < "$package_json_path")
 }
 
 _npm_subcommand() {
