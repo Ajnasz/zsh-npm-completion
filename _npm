@@ -91,6 +91,13 @@ _npm_version_arguments=(
 	'from-git'
 )
 
+_npm_install_strategies=(
+  'hoisted'
+  'nested'
+  'shallow'
+  'linked'
+)
+
 _npm_get_package_json_path() {
 	local package_json_path
 	package_json_path="$PWD"
@@ -164,6 +171,35 @@ _npm_subcommand() {
 			'(--legacy-peer-deps)--legacy-peer-deps' \
 			&& return 0
 			;;
+    'up'|'update'|'upgrade')
+      _arguments \
+        '(-S --save)'{-S,--save}'[Save installed packages to a package.json file as dependencies.]' \
+        '(--no-save)--no-save' \
+        '(--save-prod)--save-prod' \
+        '(--save-dev)--save-dev' \
+        '(--save-optional)--save-optional' \
+        '(--save-peer)--save-peer' \
+        '(--save-bundle)--save-bundle' \
+        '(-g --global)'{-g,--global}'[Operates in "global" mode, so that packages are installed into the prefix folder instead of the current working directory.]' \
+        '(--install-strategy)--install-strategy:install_strategy:(hoisted nested shallow linked)' \
+        '(--legacy-bundling)--legacy-bundling[Causes npm to install the package such that versions of npm prior to 1.4, such as the one included with node 0.8, can install the package. ]' \
+        '(--global-style)--global-style[Causes npm to install the package into your local node_modules folder with the same layout it uses with the global node_modules folder.]' \
+        '(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
+        '(--strict-peer-deps)--strict-peer-deps[If set to true, and --legacy-peer-deps is not set, then any conflicting peerDependencies will be treated as an install failure, even if npm could reasonably guess the appropriate resolution based on non-peer dependency relationships.]' \
+        '(--no-package-lock)--no-package-lock' \
+        '(--foreground-scripts)--foreground-scripts[Run all build scripts (ie, preinstall, install, and postinstall) scripts for installed packages in the foreground process, sharing standard input, output, and error with the main npm process.]' \
+        '(--ignore-scripts)--ignore-scripts[If true, npm does not run scripts specified in package.json files.]' \
+        '(--no-audit)--no-audit[When "true" submit audit reports alongside the current npm command to the default registry and all registries configured for scopes.]' \
+        '(--no-bin-links)--no-bin-links[Tells npm to create symlinks (or .cmd shims on Windows) for package executables.]' \
+        '(--no-fund)--no-fund' \
+        '(--dry-run)--dry-run[Indicates that you do not want npm to make any changes and that it should only report what it would have done.]' \
+        '(-w --workspace)'{-w,--workspace}'[Enable running a command in the context of the configured workspaces of the current project while filtering by running only the workspaces defined by this configuration option.]:workspace:' \
+        '(-ws --workspaces)'{-ws,--workspaces}'[Set to true to run the command in the context of all configured workspaces.]' \
+        '(--include-workspace-root)--include-workspace-root[Include the workspace root when workspaces are enabled for a command.]' \
+        '(--install-links)--install-links[When set file: protocol dependencies that exist outside of the project root will be packed and installed as regular dependencies instead of creating a symlink. This option has no effect on workspaces.]' \
+        && return 0
+        ;;
+
 		'uninstallun'|'un')
 			_alternative "packages:npm packages:_npm_get_packages"
 			return
