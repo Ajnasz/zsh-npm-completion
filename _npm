@@ -208,11 +208,26 @@ _npm_subcommand() {
 			_files
 			return
 			;;
-		'ci')
+		'ci'|'ic'|'clean-install'|'install-clean'|'isntall-clean')
 			_arguments \
 			'(--no-audit)--no-audit' \
 			'(--no-fund)--no-fund' \
-			&& return 0
+			'(--legacy-bundling)--legacy-bundling' \
+			'(--global-style)--global-style' \
+			'(--strict-peer-deps)--strict-peer-deps' \
+			'(--no-package-lock)--no-package-lock' \
+			'(--foreground-scripts)--foreground-scripts[Run all build scripts (ie, preinstall, install, and postinstall) scripts for installed packages in the foreground process, sharing standard input, output, and error with the main npm process.]' \
+			'(--ignore-scripts)--ignore-scripts[If true, npm does not run scripts specified in package.json files.]' \
+			'(--no-audit)--no-audit[When "true" submit audit reports alongside the current npm command to the default registry and all registries configured for scopes.]' \
+			'(--no-bin-links)--no-bin-links[Tells npm to create symlinks (or .cmd shims on Windows) for package executables.]' \
+			'(--no-fund)--no-fund' \
+			'(--dry-run)--dry-run[Indicates that you do not want npm to make any changes and that it should only report what it would have done.]' \
+			'(--include-workspace-root)--include-workspace-root' \
+			'(--install-links)--install-links' \
+			'(-ws --workspaces)'{-ws,--workspaces} \
+			'(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
+			'(--install-strategy)--install-strategy:install_strategy:(hoisted nested shallow linked)' \
+			'(-ws --workspaces)'{-ws,--workspaces}'[Set to true to run the command in the context of all configured workspaces.]' \
 			;;
 		'cache')
 			_describe -t commands "npm clean commands" _npm_cache_arguments
