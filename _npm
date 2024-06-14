@@ -212,6 +212,7 @@ _npm_subcommand() {
 			_arguments \
 			'(--no-audit)--no-audit' \
 			'(--no-fund)--no-fund' \
+			'(--legacy-peer-deps)--legacy-peer-deps' \
 			'(--legacy-bundling)--legacy-bundling' \
 			'(--global-style)--global-style' \
 			'(--strict-peer-deps)--strict-peer-deps' \
