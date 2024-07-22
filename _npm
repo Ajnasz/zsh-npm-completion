@@ -182,6 +182,7 @@ _npm_subcommand() {
         '(--save-bundle)--save-bundle' \
         '(-g --global)'{-g,--global}'[Operates in "global" mode, so that packages are installed into the prefix folder instead of the current working directory.]' \
         '(--install-strategy)--install-strategy:install_strategy:(hoisted nested shallow linked)' \
+        '(--legacy-peer-deps)--legacy-peer-deps' \
         '(--legacy-bundling)--legacy-bundling[Causes npm to install the package such that versions of npm prior to 1.4, such as the one included with node 0.8, can install the package. ]' \
         '(--global-style)--global-style[Causes npm to install the package into your local node_modules folder with the same layout it uses with the global node_modules folder.]' \
         '(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
