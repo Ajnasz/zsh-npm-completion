@@ -1,7 +1,7 @@
 #compdef npm
 #autoload
 
-JQ=$(command -v gojq || command -v jq)
+JQ=$(command -v jq || command -v gojq)
 
 local -a _1st_arguments
 _1st_arguments=(
@@ -122,7 +122,8 @@ _npm_get_scripts() {
 	then
 		return 1
 	fi
-	compadd $($JQ -r '.scripts | keys[]' < "$package_json_path")
+
+	compadd $($JQ -r '(.scripts // {}) | keys[]' < "$package_json_path")
 }
 
 _npm_get_packages() {
@@ -133,7 +134,7 @@ _npm_get_packages() {
 		return 1
 	fi
 
-	compadd $($JQ -r '.dependencies * .devDependencies | keys | .[]' < "$package_json_path")
+	compadd $($JQ -r '(.dependencies // {}) * (.devDependencies // {}) | keys | .[]' < "$package_json_path")
 }
 
 _npm_subcommand() {
@@ -153,6 +154,7 @@ _npm_subcommand() {
 			&& return 0
 			;;
 		'install'|'i'|'add')
+			_alternative "packages:npm packages:_npm_get_packages"
 			_arguments \
 			'(-P --save-prod)'{-P,--save-prod}'[Package will appear in your dependencies]' \
 			'(-D --save-dev)'{-D,--save-dev}'[Package will appear in your devDependencies]' \
@@ -169,6 +171,7 @@ _npm_subcommand() {
 			'(--no-audit)--no-audit' \
 			'(--no-fund)--no-fund' \
 			'(--legacy-peer-deps)--legacy-peer-deps' \
+			'(--verbose)--verbose' \
 			&& return 0
 			;;
     'up'|'update'|'upgrade')
