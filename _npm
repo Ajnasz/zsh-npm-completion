@@ -154,7 +154,7 @@ _npm_subcommand() {
 				&& return 0
 			;;
 		'install'|'i'|'add')
-			_alternative "packages:npm packages:_npm_get_packages"
+			_alternative "packages:npm packages:_npm_get_packages" "files:package tarball:_files -g '*.tgz'"
 			_arguments \
 				'(-P --save-prod)'{-P,--save-prod}'[Package will appear in your dependencies]' \
 				'(-D --save-dev)'{-D,--save-dev}'[Package will appear in your devDependencies]' \
