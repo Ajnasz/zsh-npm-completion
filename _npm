@@ -98,6 +98,11 @@ _npm_install_strategies=(
 	'linked'
 )
 
+_npm_audit_commands=(
+	'fix'
+	'signatures'
+	)
+
 _npm_get_package_json_path() {
 	local package_json_path
 	package_json_path="$PWD"
@@ -229,10 +234,9 @@ _npm_subcommand() {
 				'(--dry-run)--dry-run[Indicates that you do not want npm to make any changes and that it should only report what it would have done.]' \
 				'(--include-workspace-root)--include-workspace-root' \
 				'(--install-links)--install-links' \
-				'(-ws --workspaces)'{-ws,--workspaces} \
-				'(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
-				'(--install-strategy)--install-strategy:install_strategy:(hoisted nested shallow linked)' \
 				'(-ws --workspaces)'{-ws,--workspaces}'[Set to true to run the command in the context of all configured workspaces.]' \
+				'(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
+				'(--install-strategy)--install-strategy:install_strategy:(hoisted nested shallow linked)'
 				;;
 		'cache')
 			_describe -t commands "npm clean commands" _npm_cache_arguments
@@ -242,10 +246,34 @@ _npm_subcommand() {
 			_describe -t commands "npm version commands" _npm_version_arguments
 			return
 			;;
+		'audit')
+			if (( ${words[(I)fix]} == 0 && ${words[(I)signatures]} == 0 ))
+			then
+				_describe -t commands "npm audit commands" _npm_audit_commands
+			fi
+			_arguments \
+				'(--audit-level)--audit-level[The minimum level of vulnerability for npm audit to exit with a non-zero exit code.]:audit-level-dep:(info low moderate high critical none)' \
+				'(--dry-run)--dry-run[Indicates that you do not want npm to make any changes and that it should only report what it would have done. This can be passed into any of the commands that modify your local installation, eg, install, update, dedupe, uninstall, as well as pack and publish.]' \
+				'(--force -f)'{--force,-f}'[Removes various protections against unfortunate side effects, common mistakes, unnecessary performance degradation, and malicious input.]' \
+				'(--json)--json[Whether or not to output JSON data, rather than the normal output.]' \
+				'(--package-lock-only)--package-lock-only[If set to true, the current operation will only use the package-lock.json, ignoring node_modules.]' \
+				'(--no-package-lock)--no-package-lock[If set to true, then ignore package-lock.json files when installing. This will also prevent writing package-lock.json if save is true.]' \
+				'(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
+				'(--include)--include[Option that allows for defining which types of dependencies to install.]:include-dep:(prod dev optional peer)' \
+				'(--foreground-scripts)--foreground-scripts[Run all build scripts (ie, preinstall, install, and postinstall) scripts for installed packages in the foreground process, sharing standard input, output, and error with the main npm process.]' \
+				'(--ignore-scripts)--ignore-scripts[If true, npm does not run scripts specified in package.json files.]' \
+				'(-w --workspace)'{-w,--workspace}'[Enable running a command in the context of the configured workspaces of the current project while filtering by running only the workspaces defined by this configuration option.]' \
+				'(--workspaces)--workspaces[Set to true to run the command in the context of all configured workspaces.]' \
+				'(--include-workspace-root)--include-workspace-root[Include the workspace root when workspaces are enabled for a command.]' \
+				'(--install-links)--install-links[When set file: protocol dependencies will be packed and installed as regular dependencies instead of creating a symlink. This option has no effect on workspaces.]' \
+				'*:audit subcommand: '
+
 	esac
 
 	return 1
 }
+
+
 
 _arguments -C '*:: :->subcmds'
 if (( CURRENT == 1 ))
