@@ -150,7 +150,7 @@ _npm_subcommand() {
 			;;
 		'publish')
 			_arguments \
-				'(--tag)--tag[Registers the published package with the given tag]:npmtag:' \
+				'(--tag)--tag[Registers the published package with the given tag]:npm tag:' \
 				'(--access)--access[Tells the registry whether this package should be published as public or restricted]:npm access:(public restricted)' \
 				'(--otp)--otp:one time password:' \
 				'(--dry-run)--dry-run[Does everything publish would do except actually publishing to the registry]' \
@@ -193,7 +193,7 @@ _npm_subcommand() {
 				'(--legacy-peer-deps)--legacy-peer-deps' \
 				'(--legacy-bundling)--legacy-bundling[Causes npm to install the package such that versions of npm prior to 1.4, such as the one included with node 0.8, can install the package. ]' \
 				'(--global-style)--global-style[Causes npm to install the package into your local node_modules folder with the same layout it uses with the global node_modules folder.]' \
-				'(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
+				'*--omit[Dependency types to omit from the installation tree on disk.]:omit dependency:(dev optional peer)' \
 				'(--strict-peer-deps)--strict-peer-deps[If set to true, and --legacy-peer-deps is not set, then any conflicting peerDependencies will be treated as an install failure, even if npm could reasonably guess the appropriate resolution based on non-peer dependency relationships.]' \
 				'(--no-package-lock)--no-package-lock' \
 				'(--foreground-scripts)--foreground-scripts[Run all build scripts (ie, preinstall, install, and postinstall) scripts for installed packages in the foreground process, sharing standard input, output, and error with the main npm process.]' \
@@ -235,7 +235,7 @@ _npm_subcommand() {
 				'(--include-workspace-root)--include-workspace-root' \
 				'(--install-links)--install-links' \
 				'(-ws --workspaces)'{-ws,--workspaces}'[Set to true to run the command in the context of all configured workspaces.]' \
-				'(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
+				'*--omit[Dependency types to omit from the installation tree on disk.]:omit dependency:(dev optional peer)' \
 				'(--install-strategy)--install-strategy:install_strategy:(hoisted nested shallow linked)'
 				;;
 		'cache')
@@ -252,14 +252,14 @@ _npm_subcommand() {
 				_describe -t commands "npm audit commands" _npm_audit_commands
 			fi
 			_arguments \
-				'(--audit-level)--audit-level[The minimum level of vulnerability for npm audit to exit with a non-zero exit code.]:audit-level-dep:(info low moderate high critical none)' \
+				'(--audit-level)--audit-level[The minimum level of vulnerability for npm audit to exit with a non-zero exit code.]:audit level:(info low moderate high critical none)' \
 				'(--dry-run)--dry-run[Indicates that you do not want npm to make any changes and that it should only report what it would have done. This can be passed into any of the commands that modify your local installation, eg, install, update, dedupe, uninstall, as well as pack and publish.]' \
 				'(--force -f)'{--force,-f}'[Removes various protections against unfortunate side effects, common mistakes, unnecessary performance degradation, and malicious input.]' \
 				'(--json)--json[Whether or not to output JSON data, rather than the normal output.]' \
 				'(--package-lock-only)--package-lock-only[If set to true, the current operation will only use the package-lock.json, ignoring node_modules.]' \
 				'(--no-package-lock)--no-package-lock[If set to true, then ignore package-lock.json files when installing. This will also prevent writing package-lock.json if save is true.]' \
-				'(--omit)--omit[Dependency types to omit from the installation tree on disk.]:omit-dep:(dev optional peer)' \
-				'(--include)--include[Option that allows for defining which types of dependencies to install.]:include-dep:(prod dev optional peer)' \
+				'*--omit[Dependency types to omit from the installation tree on disk.]:omit dependency:(dev optional peer)' \
+				'(--include)--include[Option that allows for defining which types of dependencies to install.]:include dependency:(prod dev optional peer)' \
 				'(--foreground-scripts)--foreground-scripts[Run all build scripts (ie, preinstall, install, and postinstall) scripts for installed packages in the foreground process, sharing standard input, output, and error with the main npm process.]' \
 				'(--ignore-scripts)--ignore-scripts[If true, npm does not run scripts specified in package.json files.]' \
 				'(-w --workspace)'{-w,--workspace}'[Enable running a command in the context of the configured workspaces of the current project while filtering by running only the workspaces defined by this configuration option.]' \
